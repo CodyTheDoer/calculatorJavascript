@@ -9,8 +9,8 @@ const operate = (a, b, op) => {
     if(op === "divide" || op === "/"){return divide(a, b)};
 };
 
-const updateDisplay = (displayValue) => {
-    return document.getElementById("resultsDisplay").innerHTML = displayValue;
+const updateDisplay = (value) => {
+    return document.getElementById("resultsDisplay").innerHTML = value;
 };
 
 const clearDisplayValue = () => {
@@ -45,24 +45,35 @@ const setHold = (value) => {
 
 const buttonPush = (button) => {
     const ops = "+-*/".split("");
-    if(button === "c"){
-        setHold(0);
-        clearDisplayValue();
-        return updateDisplay(displayValue);
-    };
-    if(button >= 0 && button < 10){displayValueUpdate(button)};
     for(op of ops){
         if(button === op){
             if(holdValue === 0){
                 setHold(displayValue);
                 clearDisplayValue();
+                return lastClicked = button;
             }else{
                 let result = operate(holdValue, parseFloat(displayValue), op);
                 setHold(result);
                 clearDisplayValue();
+                return lastClicked = button;
             };
         };
     }
+    if(button === "c"){
+        setHold(0);
+        clearDisplayValue();
+        return updateDisplay(displayValue);
+    };
+    if(button === "="){
+        if(lastClicked === "/" && parseFloat(displayValue) === 0){return updateDisplay("ERROR")};
+        let results = parseInt(operate(holdValue, parseFloat(displayValue), lastClicked)*100).toString().split("");
+        clearDisplayValue();
+        for(num of results){
+            displayValueUpdate(num);
+        }
+        holdValue = 0;
+    }
+    if(button >= 0 && button < 10){displayValueUpdate(button)};
 };
 
 const dvc = () => {
@@ -90,6 +101,7 @@ window.onload = () => {
     document.getElementById("buttonDigitNine").addEventListener("click", () => {buttonPush(9)});
     updateDisplay(displayValue);
 }
+let lastClicked = "";
 let holdValue = 0;
 let displayValueLeft = [0,0,0,0,0,0];
 let displayValueRight = [0,0];
