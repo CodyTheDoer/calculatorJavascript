@@ -12,8 +12,10 @@ body{
     background: linear-gradient(180deg, rgba(198,191,153,1) 0%, rgba(255,250,185,1) 100%);
 
     max-width: 480px;
-    max-height: 700px;
+    min-width: 250px;
     width:80%;
+    
+    max-height: 700px;
     height: 80%;
     
     position: center;
