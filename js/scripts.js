@@ -44,23 +44,25 @@ const setHold = (value) => {
 };
 
 const buttonPush = (button) => {
+    const ops = "+-*/".split("");
     if(button === "c"){
         setHold(0);
         clearDisplayValue();
         return updateDisplay(displayValue);
     };
     if(button >= 0 && button < 10){displayValueUpdate(button)};
-    if(button === "+"){
-        if(holdValue === 0){
-            setHold(displayValue);
-            clearDisplayValue();
-        }else{
-            let result = operate(parseFloat(displayValue), holdValue, "+");
-            updateDisplay(result);
-            setTimeout(()=>{setHold(result)}, 1*1000);
-            setTimeout(()=>{clearDisplayValue()}, 1*1000);
+    for(op of ops){
+        if(button === op){
+            if(holdValue === 0){
+                setHold(displayValue);
+                clearDisplayValue();
+            }else{
+                let result = operate(holdValue, parseFloat(displayValue), op);
+                setHold(result);
+                clearDisplayValue();
+            };
         };
-    };
+    }
 };
 
 const dvc = () => {
