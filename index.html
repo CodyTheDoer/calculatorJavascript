@@ -1,27 +1,53 @@
 <!doctype html>
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
+    <head>
+        <meta charset="utf-8">
 
-  <title>The Premier Javascript based Calculator</title>
-  <meta name="description" content="A javascript based calculator">
-  <meta name="author" content="CodyTheDoer">
-  
-  <link rel="stylesheet" href="css/styles.css">
-</head>
+        <title>The Premier Javascript based Calculator</title>
+        <meta name="description" content="A javascript based calculator">
+        <meta name="author" content="CodyTheDoer">
+        
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
 
-<body>
-  <script src="js/scripts.js"></script>
-  <div class='viewport'>
-      <div class='calculatorBody'>
-          <div class='resultsDisplay'>
+    <body>
+      <script src="js/scripts.js"></script>
+      <div class='viewport'>
+          <div class='calculatorBody'>
+              <div class="calculatorBodySolarCells">
 
-          </div>
-          <div class='buttons'>
-              
+              </div>
+              <div class='calculatorBodyShadow'>
+                  <div id='resultsDisplay'>
+                  </div>
+              </div>
+              <div class='calculatorButtonsBody'>
+                  <div class="calculatorButtons">
+                      <button class="calculatorButtonsOperators" id="buttonOperatorAdd">+</button>
+                      <button class="calculatorButtonsOperators" id="buttonOperatorSubtract">-</button>
+                      <button class="calculatorButtonsOperators" id="buttonOperatorMultiply">*</button>
+                      <button class="calculatorButtonsOperators" id="buttonOperatorDivide">/</button>
+                      <button class="calculatorButtonsOperators" id="buttonOperatorClear">C</button>
+                      <button class="calculatorButtonsOperators" id="buttonOperatorEquals">=</button>
+                  </div>
+                  <div class="calculatorButtons">
+                      <button class="calculatorButtonsDigits" id="buttonDigitOne">1</button>
+                      <button class="calculatorButtonsDigits" id="buttonDigitTwo">2</button>
+                      <button class="calculatorButtonsDigits" id="buttonDigitThree">3</button>
+                      <button class="calculatorButtonsDigits" id="buttonDigitFour">4</button>
+                      <button class="calculatorButtonsDigits" id="buttonDigitFive">5</button>
+                      <button class="calculatorButtonsDigits" id="buttonDigitSix">6</button>
+                      <button class="calculatorButtonsDigits" id="buttonDigitSeven">7</button>
+                      <button class="calculatorButtonsDigits" id="buttonDigitEight">8</button>
+                      <button class="calculatorButtonsDigits" id="buttonDigitNine">9</button>
+                      <button class="calculatorButtonsDigits" id="buttonDigitZero">0</button>
+                  </div>
+              </div>
+              <div class="calculatorBodyBottomShadow">
+
+              </div>
           </div>
       </div>
-  </div>
-</body>
+    </body>
 </html>
