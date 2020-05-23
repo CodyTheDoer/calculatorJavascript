@@ -8,11 +8,65 @@ const operate = (a, b, op) => {
     if(op === "multiply" || op === "*"){return multiply(a, b)};
     if(op === "divide" || op === "/"){return divide(a, b)};
 };
-const updateDisplayJoin = (displayValue) => {
+
+const updateDisplay = (displayValue) => {
     return document.getElementById("resultsDisplay").innerHTML = displayValue;
 };
+
+const clearDisplayValue = () => {
+    displayValueLeft = [0,0,0,0,0,0];
+    displayValueRight = [0,0];
+    displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
+    updateDisplay(displayValue)
+    return displayValue;
+};
+
+const displayValueUpdate = (value) => {
+    displayValueRight.push(value);
+    displayValueLeft.push(displayValueRight[0]);
+    displayValueRight.shift();
+    if(displayValueLeft[0] === 0){
+        displayValueLeft.shift();
+        updateDisplay(`${displayValueLeft.join("")}.${displayValueRight.join("")}`);
+    }else{
+        displayValueRight.unshift(displayValueLeft[6]);
+        displayValueRight.pop();
+        displayValueLeft.pop();
+        updateDisplay("MAX");
+        setTimeout(()=>{updateDisplay(`${displayValueLeft.join("")}.${displayValueRight.join("")}`); }, 2*1000);
+    }
+    return displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
+};
+
+const setHold = (value) => {
+    holdValue = parseFloat(value);
+    return holdValue;
+};
+
 const buttonPush = (button) => {
-    let logic = "0123456789+-*/c=".split("");
+    if(button === "c"){
+        setHold(0);
+        clearDisplayValue();
+        return updateDisplay(displayValue);
+    };
+    if(button >= 0 && button < 10){displayValueUpdate(button)};
+    if(button === "+"){
+        if(holdValue === 0){
+            setHold(displayValue);
+            clearDisplayValue();
+        }else{
+            let result = operate(parseFloat(displayValue), holdValue, "+");
+            updateDisplay(result);
+            setTimeout(()=>{setHold(result)}, 1*1000);
+            setTimeout(()=>{clearDisplayValue()}, 1*1000);
+        };
+    };
+};
+
+const dvc = () => {
+    console.log(`value = ${displayValue}`);
+    console.log(`Lvalue = ${displayValueLeft}`);
+    console.log(`Rvalue = ${displayValueRight}`);
 };
 
 window.onload = () => {
@@ -32,13 +86,9 @@ window.onload = () => {
     document.getElementById("buttonDigitSeven").addEventListener("click", () => {buttonPush(7)});
     document.getElementById("buttonDigitEight").addEventListener("click", () => {buttonPush(8)});
     document.getElementById("buttonDigitNine").addEventListener("click", () => {buttonPush(9)});
-    updateDisplayJoin(displayValue);
+    updateDisplay(displayValue);
 }
-
-const displayValueTempLeft = [0,0,0,0,0,0];
-const displayValueTempRight = [0,0];
-const displayValue = displayValueTempLeft.join("") + "." + displayValueTempRight.join("");
-
-const holdValue = [];
-
-
+let holdValue = 0;
+let displayValueLeft = [0,0,0,0,0,0];
+let displayValueRight = [0,0];
+let displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
