@@ -39,7 +39,28 @@ const displayValueUpdate = (value) => {
 };
 
 const buttonPush = (button) => {
-    
+    const ops = "+-*/".split("");
+    for(op of ops){
+        if(button === op){
+            if(calcArray.length === 0 && (parseInt(parseFloat(displayValue)*100)*.01) != 0){
+                calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
+                calcArray.push(button);
+                clearDisplayValue();
+            }else if(parseInt(parseFloat(displayValue)*100)*.01 === 0){
+                calcArray.pop();
+                calcArray.push(button);
+            }else if(calcArray[calcArray.length] === "+" || calcArray[calcArray.length] === "-"){
+            }else if(calcArray[calcArray.length] === "*" || calcArray[calcArray.length] === "/"){
+            }
+        };
+    }
+    if(button >= 0 && button < 10){
+        displayValueUpdate(button);
+    };
+    if(button === "c"){
+    };
+    if(button === "="){
+    };
 };
 
 window.onload = () => {
