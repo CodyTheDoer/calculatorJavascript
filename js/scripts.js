@@ -51,6 +51,18 @@ const calcResults = (mode) => {
         let results = parseInt(parseFloat(operate(calcArray[0], calcArray[2], calcArray[1])) * 100)*.01;
         for(i=0;i<3;i++){
             calcArray.shift();
+        }        
+        calcArray.unshift(results);
+    };
+    if(mode === "*/"){ 
+        let results = parseInt(parseFloat(operate(calcArray[2], calcArray[4], calcArray[3])) * 100)*.01;
+        for(i=0;i<3;i++){
+            calcArray.pop();
+        }
+        calcArray.push(results);
+        results = parseInt(parseFloat(operate(calcArray[0], calcArray[2], calcArray[1])) * 100)*.01;
+        for(i=0;i<3;i++){
+            calcArray.shift();
         }
         calcArray.unshift(results);
     };
@@ -60,18 +72,22 @@ const buttonPush = (button) => {
     const ops = "+-*/".split("");
     for(op of ops){
         if(button === op){
-            if(calcArray.length === 0){
+            if(calcArray.length === 0){//if calcArray is empty log initial values.
                 calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
                 calcArray.push(button);
                 clearDisplayValue();
-            }else if(parseInt(parseFloat(displayValue)*100)*.01 === 0){//if the last button was an op, reassign op.
+            }else if(parseInt(parseFloat(displayValue)*100)*.01 === 0){//if last button clicked was an op, reassign op.
                 calcArray.pop();
                 calcArray.push(button);
-            }else if(calcArray[calcArray.length-1] === "+" || calcArray[calcArray.length-1] === "-"){
+            }else if(button === "*" || button === "/"){//if * or / operator was seleceted with numbers queue'd to operate on.
+                calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
+                calcArray.push(button);
+                clearDisplayValue();
+            }else if(button === "+" || button === "-"){//if + or - operator was seleceted with numbers queue'd to operate on.
                 calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
                 calcResults("+-");
                 clearDisplayValue();
-                let results = calcArray[0];
+                let results = parseFloat(calcArray[0]).toFixed(2);
                 for(num of results){
                     if(num === "."){continue};
                     displayValueUpdate(num);
@@ -87,6 +103,7 @@ const buttonPush = (button) => {
     if(button === "c"){
     };
     if(button === "="){
+        calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
     };
 };
 
