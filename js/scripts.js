@@ -101,9 +101,22 @@ const buttonPush = (button) => {
         displayValueUpdate(button);
     };
     if(button === "c"){
+        
     };
     if(button === "="){
         calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
+        if(calcArray.length === 5){
+            let results = operate(calcArray[calcArray.length-3], calcArray[calcArray.length-1], calcArray[calcArray.length-2]);
+            for(i=0;i<3;i++){
+                calcArray.pop();
+            }
+            calcArray.push(results);
+        };
+        let results = operate(calcArray[calcArray.length-3], calcArray[calcArray.length-1], calcArray[calcArray.length-2]);
+        for(i=0;i<3;i++){
+            calcArray.pop();
+        }
+        calcArray.push(results);
     };
 };
 
