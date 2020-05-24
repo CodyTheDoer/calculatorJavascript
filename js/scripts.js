@@ -101,6 +101,7 @@ window.onload = () => {
     document.getElementById("buttonDigitNine").addEventListener("click", () => {buttonPush(9)});
     updateDisplay(displayValue);
 }
+
 let lastClicked = "";
 let holdValue = 0;
 let displayValueLeft = [0,0,0,0,0,0];
