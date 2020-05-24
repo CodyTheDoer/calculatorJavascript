@@ -38,48 +38,8 @@ const displayValueUpdate = (value) => {
     return displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
 };
 
-const setHold = (value) => {
-    holdValue = parseFloat(value);
-    return holdValue;
-};
-
 const buttonPush = (button) => {
-    const ops = "+-*/".split("");
-    for(op of ops){
-        if(button === op){
-            if(holdValue === 0){
-                setHold(displayValue);
-                clearDisplayValue();
-                return lastClicked = button;
-            }else{
-                let result = operate(holdValue, parseFloat(displayValue), op);
-                setHold(result);
-                clearDisplayValue();
-                return lastClicked = button;
-            };
-        };
-    }
-    if(button === "c"){
-        setHold(0);
-        clearDisplayValue();
-        return updateDisplay(displayValue);
-    };
-    if(button === "="){
-        if(lastClicked === "/" && parseFloat(displayValue) === 0){return updateDisplay("ERROR")};
-        let results = parseInt(operate(holdValue, parseFloat(displayValue), lastClicked)*100).toString().split("");
-        clearDisplayValue();
-        for(num of results){
-            displayValueUpdate(num);
-        }
-        holdValue = 0;
-    }
-    if(button >= 0 && button < 10){displayValueUpdate(button)};
-};
-
-const dvc = () => {
-    console.log(`value = ${displayValue}`);
-    console.log(`Lvalue = ${displayValueLeft}`);
-    console.log(`Rvalue = ${displayValueRight}`);
+    
 };
 
 window.onload = () => {
@@ -101,8 +61,7 @@ window.onload = () => {
     document.getElementById("buttonDigitNine").addEventListener("click", () => {buttonPush(9)});
     updateDisplay(displayValue);
 }
-let lastClicked = "";
-let holdValue = 0;
+const calcArray = [];
 let displayValueLeft = [0,0,0,0,0,0];
 let displayValueRight = [0,0];
 let displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
