@@ -42,19 +42,35 @@ const buttonPush = (button) => {
     const ops = "+-*/".split("");
     for(op of ops){
         if(button === op){
-            if(calcArray.length === 0 && (parseInt(parseFloat(displayValue)*100)*.01) != 0){
+            if(calcArray.length === 0){
                 calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
                 calcArray.push(button);
                 clearDisplayValue();
-            }else if(parseInt(parseFloat(displayValue)*100)*.01 === 0){
+            }else if(parseInt(parseFloat(displayValue)*100)*.01 === 0){//if the last button was an op, reassign op.
                 calcArray.pop();
                 calcArray.push(button);
-            }else if(calcArray[calcArray.length] === "+" || calcArray[calcArray.length] === "-"){
-            }else if(calcArray[calcArray.length] === "*" || calcArray[calcArray.length] === "/"){
+            }else if(calcArray[calcArray.length-1] === "+" || calcArray[calcArray.length-1] === "-"){
+                calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
+                let results = parseInt(parseFloat(operate(calcArray[0], calcArray[2], calcArray[1]))*100).toString().split("");
+                clearDisplayValue();
+                for(num of results){
+                    displayValueUpdate(num);
+                }
+                resultsFlag = true;
+                calcArray.push(button);
             }
+
+
+/*            }else if(calcArray[calcArray.length] === "*" || calcArray[calcArray.length] === "/"){
+                calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
+            }*/
         };
     }
     if(button >= 0 && button < 10){
+        if(resultsFlag = true){
+            clearDisplayValue();
+            resultsFlag = false;
+        };
         displayValueUpdate(button);
     };
     if(button === "c"){
@@ -83,6 +99,7 @@ window.onload = () => {
     updateDisplay(displayValue);
 }
 const calcArray = [];
+let resultsFlag = false;
 let displayValueLeft = [0,0,0,0,0,0];
 let displayValueRight = [0,0];
 let displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
