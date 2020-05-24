@@ -21,7 +21,15 @@ const clearDisplayValue = () => {
     return displayValue;
 };
 
+const resultsCheck = () => {
+    if(resultsFlag === true){
+        clearDisplayValue();
+        resultsFlag = false;
+    }
+};
+
 const displayValueUpdate = (value) => {
+    resultsCheck();
     displayValueRight.push(value);
     displayValueLeft.push(displayValueRight[0]);
     displayValueRight.shift();
@@ -38,6 +46,16 @@ const displayValueUpdate = (value) => {
     return displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
 };
 
+const calcResults = (mode) => { 
+    if(mode === "+-"){ 
+        let results = parseInt(parseFloat(operate(calcArray[0], calcArray[2], calcArray[1])) * 100)*.01;
+        for(i=0;i<3;i++){
+            calcArray.shift();
+        }
+        calcArray.unshift(results);
+    };
+};
+
 const buttonPush = (button) => {
     const ops = "+-*/".split("");
     for(op of ops){
@@ -51,26 +69,19 @@ const buttonPush = (button) => {
                 calcArray.push(button);
             }else if(calcArray[calcArray.length-1] === "+" || calcArray[calcArray.length-1] === "-"){
                 calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
-                let results = parseInt(parseFloat(operate(calcArray[0], calcArray[2], calcArray[1]))*100).toString().split("");
+                calcResults("+-");
                 clearDisplayValue();
+                let results = calcArray[0];
                 for(num of results){
+                    if(num === "."){continue};
                     displayValueUpdate(num);
                 }
                 resultsFlag = true;
                 calcArray.push(button);
-            }
-
-
-/*            }else if(calcArray[calcArray.length] === "*" || calcArray[calcArray.length] === "/"){
-                calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
-            }*/
+            };
         };
     }
     if(button >= 0 && button < 10){
-        if(resultsFlag = true){
-            clearDisplayValue();
-            resultsFlag = false;
-        };
         displayValueUpdate(button);
     };
     if(button === "c"){
@@ -100,6 +111,7 @@ window.onload = () => {
 }
 const calcArray = [];
 let resultsFlag = false;
+let holdValue = 0;
 let displayValueLeft = [0,0,0,0,0,0];
 let displayValueRight = [0,0];
 let displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
