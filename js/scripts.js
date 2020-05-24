@@ -1,7 +1,7 @@
 const add = (a, b) => {return a+b};
 const subtract = (a, b) => {return a-b};
 const multiply = (a, b) => {return a*b};
-const divide = (a, b) => {return a/b}; 
+const divide = (a, b) => {return a/b};
 const operate = (a, b, op) => {
     if(op === "add" || op === "+"){return add(a, b)};
     if(op === "subtract" || op === "-"){return subtract(a, b)};
@@ -19,6 +19,24 @@ const clearDisplayValue = () => {
     displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
     updateDisplay(displayValue)
     return displayValue;
+};
+
+const clearCalcArray = (num) => {
+    for(i=0; i<calcArray.length; i++){
+        calcArray.pop();
+    };
+};
+
+const calcPopThree = () => {
+    for(i=0;i<3;i++){
+        calcArray.pop();
+    }
+};
+
+const calcShiftThree = () => {
+    for(i=0;i<3;i++){
+        calcArray.shift();
+    }
 };
 
 const resultsCheck = () => {
@@ -49,21 +67,15 @@ const displayValueUpdate = (value) => {
 const calcResults = (mode) => { 
     if(mode === "+-"){ 
         let results = parseInt(parseFloat(operate(calcArray[0], calcArray[2], calcArray[1])) * 100)*.01;
-        for(i=0;i<3;i++){
-            calcArray.shift();
-        }        
+        calcShiftThree();    
         calcArray.unshift(results);
     };
     if(mode === "*/"){ 
         let results = parseInt(parseFloat(operate(calcArray[2], calcArray[4], calcArray[3])) * 100)*.01;
-        for(i=0;i<3;i++){
-            calcArray.pop();
-        }
+        calcPopThree();
         calcArray.push(results);
         results = parseInt(parseFloat(operate(calcArray[0], calcArray[2], calcArray[1])) * 100)*.01;
-        for(i=0;i<3;i++){
-            calcArray.shift();
-        }
+        calcShiftThree();
         calcArray.unshift(results);
     };
 };
@@ -101,22 +113,27 @@ const buttonPush = (button) => {
         displayValueUpdate(button);
     };
     if(button === "c"){
-        
+        clearDisplayValue();
+        clearCalcArray();
+        clearCalcArray();
+        clearCalcArray();
     };
     if(button === "="){
         calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
-        if(calcArray.length === 5){
+        while(calcArray.length === 5){
             let results = operate(calcArray[calcArray.length-3], calcArray[calcArray.length-1], calcArray[calcArray.length-2]);
-            for(i=0;i<3;i++){
-                calcArray.pop();
-            }
+            calcPopThree();
             calcArray.push(results);
         };
-        let results = operate(calcArray[calcArray.length-3], calcArray[calcArray.length-1], calcArray[calcArray.length-2]);
-        for(i=0;i<3;i++){
-            calcArray.pop();
+        let primaryResults = operate(calcArray[calcArray.length-3], calcArray[calcArray.length-1], calcArray[calcArray.length-2]);
+        calcPopThree();
+        clearDisplayValue();
+        let returnNums = parseFloat(primaryResults).toFixed(2);
+        for(num of returnNums){
+            if(num === "."){continue};
+            displayValueUpdate(num);
         }
-        calcArray.push(results);
+        resultsFlag = true;
     };
 };
 
