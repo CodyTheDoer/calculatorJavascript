@@ -86,8 +86,8 @@ body{
     margin-top: -5px;
     margin-bottom: 10px;
 
-    background: linear-gradient(180deg, rgb(230, 222, 182) 0%, rgb(161, 157, 122) 150%);
-    box-shadow: 0 10px rgb(146, 144, 108) ;
+    background: linear-gradient(180deg, rgb(234, 216, 124) 0%, rgb(158, 136, 74) 150%);
+    box-shadow: 0 10px rgb(146, 133, 68) ;
     border: none;
     border-radius: 4px;
 }

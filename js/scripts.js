@@ -2,7 +2,17 @@ const operate = (a, b, op) => {
     if(op === "+"){return a+b};
     if(op === "-"){return a-b};
     if(op === "*"){return a*b};
-    if(op === "/"){return a/b};
+    if(op === "/"){
+        if(a === 0 || b === 0){
+            clearDisplayValue();
+            updateDisplay("<br>ERROR<br>ZERO");
+            setTimeout(()=>{updateDisplay(`${displayValueLeft.join("")}.${displayValueRight.join("")}`); }, 5*1000);
+            const tempArray = [];
+            calcArray = Array.from(tempArray);        
+            return;
+        }
+        return a/b
+    };
 };
 
 const updateDisplay = (value) => {
