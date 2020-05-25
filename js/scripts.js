@@ -17,11 +17,6 @@ const clearDisplayValue = () => {
     return displayValue;
 };
 
-const clearArray = (array) => {
-    const temp = [];
-    array = Array.from(temp);
-};
-
 const resultsCheck = () => {
     if(resultsFlag === true){
         clearDisplayValue();
@@ -65,9 +60,9 @@ const calcResults = (array) => {
         let sum = operate(array[0], array[2], array[1]);
         array.splice(0, 3, sum); 
     }
-    clearArray(resultsArray);
     resultsArray = Array.from(calcArray);
-    clearArray(calcArray);
+    const tempArray = [];
+    calcArray = Array.from(tempArray);
     return parseFloat(resultsArray[0]).toFixed(2);
 }
 
@@ -94,18 +89,25 @@ const buttonPush = (button) => {
     };
     if(button === "c"){
         clearDisplayValue();
-        clearArray(calcArray);
-        clearArray(resultsArray);
+        const tempArray = [];
+        calcArray = Array.from(tempArray);
+        resultsArray = Array.from(tempArray);
     };
     if(button === "="){
-        calcResults(calcArray);
-        let results = parseFloat(resultsArray[0]).toFixed(2);
-        clearDisplayValue();
-        for(num of results){
-            if(num === "."){continue};
-            displayValueUpdate(num);
+        const tempArray = [];
+        if(calcArray.length > 1){
+            calcResults(calcArray);
+        };
+        if(resultsArray.length > 0){
+            let results = parseFloat(resultsArray[0]).toFixed(2);
+            clearDisplayValue();
+            for(num of results){
+                if(num === "."){continue};
+                displayValueUpdate(num);
+            }
+            resultsArray = Array.from(tempArray);
+            resultsFlag = true;    
         }
-        resultsFlag = true;
     };
 };
 
