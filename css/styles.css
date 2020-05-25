@@ -36,6 +36,8 @@ body{
     margin: auto;
     margin-bottom: 3%;
     margin-top: 2%;
+
+    border-radius: 15px;
 }
 
 .calculatorBodyShadow{
