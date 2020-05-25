@@ -36,7 +36,7 @@ const displayValueUpdate = (value) => {
         displayValueRight.unshift(displayValueLeft[10]);
         displayValueRight.pop();
         displayValueLeft.pop();
-        updateDisplay("<br>MAX");
+        updateDisplay("<br>ERROR");
         setTimeout(()=>{updateDisplay(`${displayValueLeft.join("")}.${displayValueRight.join("")}`); }, 2*1000);
     }
     return displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
