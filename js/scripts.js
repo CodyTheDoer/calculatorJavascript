@@ -1,12 +1,8 @@
-const add = (a, b) => {return a+b};
-const subtract = (a, b) => {return a-b};
-const multiply = (a, b) => {return a*b};
-const divide = (a, b) => {return a/b};
 const operate = (a, b, op) => {
-    if(op === "add" || op === "+"){return add(a, b)};
-    if(op === "subtract" || op === "-"){return subtract(a, b)};
-    if(op === "multiply" || op === "*"){return multiply(a, b)};
-    if(op === "divide" || op === "/"){return divide(a, b)};
+    if(op === "+"){return a+b};
+    if(op === "-"){return a-b};
+    if(op === "*"){return a*b};
+    if(op === "/"){return a/b};
 };
 
 const updateDisplay = (value) => {
@@ -14,29 +10,16 @@ const updateDisplay = (value) => {
 };
 
 const clearDisplayValue = () => {
-    displayValueLeft = [0,0,0,0,0,0];
+    displayValueLeft = [0,0,0,0,0,0,0,0,0,0];
     displayValueRight = [0,0];
     displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
     updateDisplay(displayValue)
     return displayValue;
 };
 
-const clearCalcArray = (num) => {
-    for(i=0; i<calcArray.length; i++){
-        calcArray.pop();
-    };
-};
-
-const calcPopThree = () => {
-    for(i=0;i<3;i++){
-        calcArray.pop();
-    }
-};
-
-const calcShiftThree = () => {
-    for(i=0;i<3;i++){
-        calcArray.shift();
-    }
+const clearArray = (array) => {
+    const temp = [];
+    array = Array.from(temp);
 };
 
 const resultsCheck = () => {
@@ -55,30 +38,38 @@ const displayValueUpdate = (value) => {
         displayValueLeft.shift();
         updateDisplay(`${displayValueLeft.join("")}.${displayValueRight.join("")}`);
     }else{
-        displayValueRight.unshift(displayValueLeft[6]);
+        displayValueRight.unshift(displayValueLeft[10]);
         displayValueRight.pop();
         displayValueLeft.pop();
-        updateDisplay("MAX");
+        updateDisplay("<br>MAX");
         setTimeout(()=>{updateDisplay(`${displayValueLeft.join("")}.${displayValueRight.join("")}`); }, 2*1000);
     }
     return displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
 };
 
-const calcResults = (mode) => { 
-    if(mode === "+-"){ 
-        let results = parseInt(parseFloat(operate(calcArray[0], calcArray[2], calcArray[1])) * 100)*.01;
-        calcShiftThree();    
-        calcArray.unshift(results);
+const calcResults = (array) => {
+    array.push(parseInt(parseFloat(displayValue)*100)*.01);
+    const updateOpIndex = () => {
+        let indexMultiply = array.indexOf("*")
+        let indexDivide = array.indexOf("/");
+        (indexDivide > indexMultiply)? higherOpIndex = indexDivide: higherOpIndex = indexMultiply;    
     };
-    if(mode === "*/"){ 
-        let results = parseInt(parseFloat(operate(calcArray[2], calcArray[4], calcArray[3])) * 100)*.01;
-        calcPopThree();
-        calcArray.push(results);
-        results = parseInt(parseFloat(operate(calcArray[0], calcArray[2], calcArray[1])) * 100)*.01;
-        calcShiftThree();
-        calcArray.unshift(results);
+    let higherOpIndex = -1;
+    updateOpIndex();
+    while(higherOpIndex > 0){
+        let sum = operate(array[higherOpIndex-1],array[higherOpIndex+1],array[higherOpIndex]);
+        array.splice(higherOpIndex-1, 3, sum); 
+        updateOpIndex();
     };
-};
+    while(array.length > 1){
+        let sum = operate(array[0], array[2], array[1]);
+        array.splice(0, 3, sum); 
+    }
+    clearArray(resultsArray);
+    resultsArray = Array.from(calcArray);
+    clearArray(calcArray);
+    return parseFloat(resultsArray[0]).toFixed(2);
+}
 
 const buttonPush = (button) => {
     const ops = "+-*/".split("");
@@ -91,21 +82,10 @@ const buttonPush = (button) => {
             }else if(parseInt(parseFloat(displayValue)*100)*.01 === 0){//if last button clicked was an op, reassign op.
                 calcArray.pop();
                 calcArray.push(button);
-            }else if(button === "*" || button === "/"){//if * or / operator was seleceted with numbers queue'd to operate on.
+            }else{
                 calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
                 calcArray.push(button);
                 clearDisplayValue();
-            }else if(button === "+" || button === "-"){//if + or - operator was seleceted with numbers queue'd to operate on.
-                calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
-                calcResults("+-");
-                clearDisplayValue();
-                let results = parseFloat(calcArray[0]).toFixed(2);
-                for(num of results){
-                    if(num === "."){continue};
-                    displayValueUpdate(num);
-                }
-                resultsFlag = true;
-                calcArray.push(button);
             };
         };
     }
@@ -114,28 +94,26 @@ const buttonPush = (button) => {
     };
     if(button === "c"){
         clearDisplayValue();
-        clearCalcArray();
-        clearCalcArray();
-        clearCalcArray();
+        clearArray(calcArray);
+        clearArray(resultsArray);
     };
     if(button === "="){
-        calcArray.push(parseInt(parseFloat(displayValue)*100)*.01);
-        while(calcArray.length === 5){
-            let results = operate(calcArray[calcArray.length-3], calcArray[calcArray.length-1], calcArray[calcArray.length-2]);
-            calcPopThree();
-            calcArray.push(results);
-        };
-        let primaryResults = operate(calcArray[calcArray.length-3], calcArray[calcArray.length-1], calcArray[calcArray.length-2]);
-        calcPopThree();
+        calcResults(calcArray);
+        let results = parseFloat(resultsArray[0]).toFixed(2);
         clearDisplayValue();
-        let returnNums = parseFloat(primaryResults).toFixed(2);
-        for(num of returnNums){
+        for(num of results){
             if(num === "."){continue};
             displayValueUpdate(num);
         }
         resultsFlag = true;
     };
 };
+
+let calcArray = [];
+let resultsArray = [];
+let resultsFlag = false;
+let displayValueLeft = [0,0,0,0,0,0,0,0,0,0];
+let displayValueRight = [0,0];
 
 window.onload = () => {
     document.getElementById("buttonOperatorAdd").addEventListener("click", () => {buttonPush("+")});
@@ -154,11 +132,5 @@ window.onload = () => {
     document.getElementById("buttonDigitSeven").addEventListener("click", () => {buttonPush(7)});
     document.getElementById("buttonDigitEight").addEventListener("click", () => {buttonPush(8)});
     document.getElementById("buttonDigitNine").addEventListener("click", () => {buttonPush(9)});
-    updateDisplay(displayValue);
+    updateDisplay("0000000000.00");
 }
-const calcArray = [];
-let resultsFlag = false;
-let holdValue = 0;
-let displayValueLeft = [0,0,0,0,0,0];
-let displayValueRight = [0,0];
-let displayValue = `${displayValueLeft.join("")}.${displayValueRight.join("")}`;
